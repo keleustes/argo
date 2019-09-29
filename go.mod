@@ -76,7 +76,7 @@ replace (
 	k8s.io/component-base => k8s.io/component-base v0.0.0-20190918160511-547f6c5d7090
 	k8s.io/cri-api => k8s.io/cri-api v0.0.0-20190828162817-608eb1dad4ac
 	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.0.0-20190918163402-db86a8c7bb21
-	k8s.io/helm => github.com/keleustes/helm v2.10.0-rc.2.0.20190925055845-e5261361168d+incompatible
+	k8s.io/helm => github.com/keleustes/helm v1.16.0
 	k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.0.0-20190918161219-8c8f079fddc3
 	k8s.io/kube-controller-manager => k8s.io/kube-controller-manager v0.0.0-20190918162944-7a93a0ddadd8
 	k8s.io/kube-proxy => k8s.io/kube-proxy v0.0.0-20190918162534-de037b596c1e
@@ -87,5 +87,5 @@ replace (
 	k8s.io/metrics => k8s.io/metrics v0.0.0-20190918162108-227c654b2546
 	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.0.0-20190918161442-d4c9c65c82af
 
-	sigs.k8s.io/controller-runtime v0.2.2 => github.com/keleustes/controller-runtime v0.2.0-beta.1.0.20190925063420-587bc6ca5913
+	sigs.k8s.io/controller-runtime v0.2.2 => github.com/keleustes/controller-runtime v1.16.0
 )
