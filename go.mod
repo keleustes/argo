@@ -87,5 +87,5 @@ replace (
 	k8s.io/metrics => k8s.io/metrics v0.0.0-20191003002233-837aead57baf
 	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.0.0-20191003001538-80f33ca02582
 
-	sigs.k8s.io/controller-runtime => github.com/keleustes/controller-runtime v1.16.1
+	sigs.k8s.io/controller-runtime => github.com/keleustes/controller-runtime v1.16.2
 )
