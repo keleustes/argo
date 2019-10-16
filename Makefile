@@ -50,7 +50,7 @@ all: cli controller-image executor-image
 
 .PHONY: builder-image
 builder-image:
-	docker build -t $(IMAGE_PREFIX)argo-ci-builder:$(IMAGE_TAG) --target builder .
+	docker build --network=host -t $(IMAGE_PREFIX)argo-ci-builder:$(IMAGE_TAG) --target builder .
 
 .PHONY: cli
 cli:
@@ -81,7 +81,7 @@ cli-windows:
 
 .PHONY: cli-image
 cli-image:
-	docker build -t $(IMAGE_PREFIX)argocli:$(IMAGE_TAG) --target argocli .
+	docker build --network=host -t $(IMAGE_PREFIX)argocli:$(IMAGE_TAG) --target argocli .
 	@if [ "$(DOCKER_PUSH)" = "true" ] ; then docker push $(IMAGE_PREFIX)argocli:$(IMAGE_TAG) ; fi
 
 .PHONY: controller
@@ -92,10 +92,10 @@ controller:
 controller-image:
 ifeq ($(DEV_IMAGE), true)
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -i -ldflags '${LDFLAGS}' -o workflow-controller ./cmd/workflow-controller
-	docker build -t $(IMAGE_PREFIX)workflow-controller:$(IMAGE_TAG) -f Dockerfile.workflow-controller-dev .
+	docker build --network=host -t $(IMAGE_PREFIX)workflow-controller:$(IMAGE_TAG) -f Dockerfile.workflow-controller-dev .
 	rm -f workflow-controller
 else
-	docker build -t $(IMAGE_PREFIX)workflow-controller:$(IMAGE_TAG) --target workflow-controller .
+	docker build --network=host -t $(IMAGE_PREFIX)workflow-controller:$(IMAGE_TAG) --target workflow-controller .
 endif
 	@if [ "$(DOCKER_PUSH)" = "true" ] ; then docker push $(IMAGE_PREFIX)workflow-controller:$(IMAGE_TAG) ; fi
 
@@ -105,7 +105,7 @@ executor:
 
 .PHONY: executor-base-image
 executor-base-image:
-	docker build -t argoexec-base --target argoexec-base .
+	docker build --network=host -t argoexec-base --target argoexec-base .
 
 # The DEV_IMAGE versions of controller-image and executor-image are speed optimized development
 # builds of workflow-controller and argoexec images respectively. It allows for faster image builds
@@ -119,11 +119,11 @@ executor-base-image:
 ifeq ($(DEV_IMAGE), true)
 executor-image: executor-base-image
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -i -ldflags '${LDFLAGS}' -o argoexec ./cmd/argoexec
-	docker build -t $(IMAGE_PREFIX)argoexec:$(IMAGE_TAG) -f Dockerfile.argoexec-dev .
+	docker build --network=host -t $(IMAGE_PREFIX)argoexec:$(IMAGE_TAG) -f Dockerfile.argoexec-dev .
 	rm -f argoexec
 else
 executor-image:
-	docker build -t $(IMAGE_PREFIX)argoexec:$(IMAGE_TAG) --target argoexec .
+	docker build --network=host -t $(IMAGE_PREFIX)argoexec:$(IMAGE_TAG) --target argoexec .
 endif
 	@if [ "$(DOCKER_PUSH)" = "true" ] ; then docker push $(IMAGE_PREFIX)argoexec:$(IMAGE_TAG) ; fi
 
@@ -178,7 +178,7 @@ release-precheck: manifests codegen precheckin
 
 .PHONY: release-clis
 release-clis: cli-image
-	docker build --iidfile /tmp/argo-cli-build --target argo-build --build-arg MAKE_TARGET="cli-darwin cli-windows" .
+	docker build --network=host --iidfile /tmp/argo-cli-build --target argo-build --build-arg MAKE_TARGET="cli-darwin cli-windows" .
 	docker create --name tmp-cli `cat /tmp/argo-cli-build`
 	mkdir -p ${DIST_DIR}
 	docker cp tmp-cli:/go/src/github.com/argoproj/argo/dist/argo-darwin-amd64 ${DIST_DIR}/argo-darwin-amd64
